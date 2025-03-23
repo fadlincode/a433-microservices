@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  # database : mongo:3 | menggunakan volume app-db -> /data/db
+  item-db:
+    image: mongo:3
+    container_name: item-db
+    volumes:
+      - app-db:/data/db
+    restart: always
+
+  # aplikasi : dari docker hub | port : 80
+  item-app:
+    image: fadlinarsin/item-app:v1
+    container_name: item-app
+    ports:
+      - "80:8080"
+    depends_on:
+      - item-db
+    restart: always
+
+# volume app-db
+volumes:
+  app-db:
