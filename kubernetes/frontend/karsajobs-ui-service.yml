@@ -12,4 +12,5 @@ spec:
     tier: frontend
   ports:
   - port: 8000
+    # set default nodePort : 30030 (range nodeport)
     nodePort: 30030    

@@ -4,4 +4,6 @@ karsajobs : https://ghcr.io/fadlincode/karsajobs
 karsajobs-ui : https://ghcr.io/fadlincode/karsajobs-ui
 
 repo-url : https://github.com/fadlincode/a433-microservices
-project-url : https://github.com/fadlincode/a433-microservices/tree/proyek-kedua
+karsajobs-repo : https://github.com/fadlincode/a433-microservices/tree/karsajobs
+karsajobs-ui-repo : https://github.com/fadlincode/a433-microservices/tree/karsajobs-ui
+proyek-kedua-repo : https://github.com/fadlincode/a433-microservices/tree/proyek-kedua

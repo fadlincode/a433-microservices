@@ -1,3 +1,6 @@
+# set storage 1Gb
+# set path : /mnt/data
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:

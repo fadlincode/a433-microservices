@@ -37,11 +37,13 @@ spec:
         - name: MONGO_HOST
           value: mongo-db
         - name: MONGO_USER
+          # mengambil nilai dari mongodb/mongo-secret.yml
           valueFrom:
             secretKeyRef:
               name: mongo-db-secret
               key: MONGO_ROOT_USERNAME
         - name: MONGO_PASS
+        # mengambil nilai dari mongodb/mongo-secret.yml
           valueFrom:
             secretKeyRef:
               name: mongo-db-secret
