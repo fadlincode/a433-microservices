@@ -1,26 +1,26 @@
 #!/bin/bash
 
-# docker hub username
-docker_hub_user="fadlinarsin"
+# github username
+github_user="fadlincode"
 
-# image name
-image_name="karsajobs-ui"
+# package name
+package_name="karsajobs-ui"
 
-# image tag/version
-image_tag="latest"
+# package tag/version
+package_tag="latest"
 
-# docker hub image name format
-docker_hub_image_name="$docker_hub_user/$image_name:$image_tag"
+# github package name format
+github_package_name="$github_user/$package_name:$package_tag"
 
 # Step by step dari instruksi submission dicoding 
-echo "1. Build Docker image"
-docker build -t $image_name:$image_tag .
-docker tag $image_name:$image_tag $docker_hub_image_name
+echo "1. Build docker image"
+docker build -t $github_package_name .
+docker tag $github_package_name ghcr.io/$github_package_name
 
-echo "2. Login ke Docker Hub"
-docker login
+echo "2. Login ke GHCR"
+docker login ghcr.io -u $github_user -p $GHCR_TOKEN
 
-echo "3. Mengunggah image ke Docker hub"
-docker push $docker_hub_image_name
+echo "3. Upload image ke GHCR"
+docker push ghcr.io/$github_package_name
 
-echo "Docker image berhasil di push ke Docker Hub: $docker_hub_image_name"
+echo "Docker image berhasil di push ke GHCR: ghcr.io/$github_package_name"

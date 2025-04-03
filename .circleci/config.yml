@@ -1,0 +1,35 @@
+version: 2.1
+
+executors:
+  node-executor:
+    # Menggunakan Node.js untuk frontend
+    docker:
+      - image: cimg/node:18.16  
+
+jobs:
+  # job untuk proses menginstal hadolint dan menjalankannya terhadap berkas Dockerfile.
+  lint-dockerfile:
+    docker:
+      - image: hadolint/hadolint:latest-alpine
+    steps:
+      - checkout
+      - run:
+          name: Lint Dockerfile
+          command: hadolint Dockerfile
+
+  # job build image ke github container registry
+  build-app-karsajobs-ui:
+    executor: node-executor
+    steps:
+      - checkout
+      - run:
+          name: Build Docker Image
+          command: ./build_push_image_karsajobs_ui.sh
+
+workflows:
+  workflow-karsajobs-ui:
+    jobs:
+      - lint-dockerfile
+      - build-app-karsajobs-ui:
+          requires:
+            - lint-dockerfile
