@@ -1,0 +1,49 @@
+version: 2.1
+
+executors:
+  docker-executor:
+    # Menggunakan Go untuk backend
+    docker:
+      - image: cimg/go:1.21  
+
+jobs:
+  # job untuk proses menginstal hadolint dan menjalankannya terhadap berkas Dockerfile.
+  lint-dockerfile:
+    docker:
+      - image: hadolint/hadolint:latest
+    steps:
+      - checkout
+      - run:
+          name: Lint Dockerfile
+          command: hadolint Dockerfile
+
+  # job untuk menjalankan unit test untuk backend
+  test-app:
+    executor: docker-executor
+    steps:
+      - checkout
+      - run:
+          name: Run Unit Tests
+          command: go test -v -short --count=1 $(go list ./...)
+
+  # job build image ke github container registry
+  build-app-karsajobs:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          command: ./build_push_image_karsajob.sh
+
+workflows:
+  version: 2
+  workflow-karsajobs:
+    jobs:
+      - lint-dockerfile
+      - test-app:
+          requires:
+            - lint-dockerfile
+      - build-app-karsajobs:
+          requires:
+            - test-app
