@@ -17,7 +17,7 @@ jobs:
           name: Lint Dockerfile
           command: hadolint Dockerfile
 
-  # job untuk menjalankan unit test untuk backend
+  # job untuk menjalankan unit test untuk backends
   test-app:
     executor: docker-executor
     steps:
