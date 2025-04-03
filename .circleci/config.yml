@@ -10,14 +10,12 @@ jobs:
   # job untuk proses menginstal hadolint dan menjalankannya terhadap berkas Dockerfile.
   lint-dockerfile:
     docker:
-      - image: hadolint/hadolint:latest
+      - image: hadolint/hadolint:alpine
     steps:
       - checkout
       - run:
           name: Lint Dockerfile
-          command: |
-            apk add --no-cache bash
-            hadolint Dockerfile
+          command: hadolint Dockerfile
 
   # job untuk menjalankan unit test untuk backends
   test-app:
