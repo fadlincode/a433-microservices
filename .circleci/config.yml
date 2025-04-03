@@ -37,7 +37,6 @@ jobs:
           command: ./build_push_image_karsajob.sh
 
 workflows:
-  version: 2
   workflow-karsajobs:
     jobs:
       - lint-dockerfile
