@@ -15,7 +15,9 @@ jobs:
       - checkout
       - run:
           name: Lint Dockerfile
-          command: hadolint Dockerfile
+          command: |
+            apk add --no-cache bash
+            hadolint Dockerfile
 
   # job untuk menjalankan unit test untuk backends
   test-app:
