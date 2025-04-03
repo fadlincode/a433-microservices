@@ -1,7 +1,7 @@
 version: 2.1
 
 executors:
-  node-executor:
+  docker-executor:
     # Menggunakan Node.js untuk frontend
     docker:
       - image: cimg/node:18.16  
@@ -19,9 +19,10 @@ jobs:
 
   # job build image ke github container registry
   build-app-karsajobs-ui:
-    executor: node-executor
+    executor: docker-executor
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Build Docker Image
           command: ./build_push_image_karsajobs_ui.sh
