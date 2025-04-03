@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-db
+  labels:
+    app: mongo-db
+    tier: database
+spec:
+  serviceName: mongo-db
+  replicas: 1
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: mongo-db
+      tier: database
+  template:
+    metadata:
+      labels:
+        app: mongo-db
+        tier: database
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mongo
+        image: mongo:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        # ---------------------------------------------
+        # Environtment variable
+        # ---------------------------------------------
+        # MONGO_INITDB_ROOT_USERNAME_FILE dengan nilai /etc/mongo-credentials/MONGO_ROOT_USERNAME.
+        # MONGO_INITDB_ROOT_PASSWORD_FILE dengan nilai /etc/mongo-credentials/MONGO_ROOT_PASSWORD.
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME_FILE
+          value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+          value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+        # ---------------------------------------------
+        # Volume Mounts
+        # ---------------------------------------------
+        # Persistent Volume dengan mount path /data/db.
+        # ConfigMap dengan mount path /config.
+        # Secret dengan mount path /etc/mongo-credentials.
+        volumeMounts:
+        - name: mongo-persistent-volume
+          mountPath: /data/db
+        - name: mongo-config-volume
+          mountPath: /config
+        - name: mongo-secret-volume
+          mountPath: /etc/mongo-credentials
+      volumes:
+      - name: mongo-persistent-volume
+        persistentVolumeClaim:
+          # Ambil dari objek PVC pada mongo-pv-pvc.yml
+          claimName: mongo-db-pvc
+      - name: mongo-config-volume
+        configMap:
+          # Ambil dari objek ConfigMap pada mongo-configmap.yml
+          name: mongo-db-config
+          items: 
+          - key: mongo.conf
+            path: mongo.conf
+      - name: mongo-secret-volume
+        secret:
+          # Ambil dari objek Secret pada mongo-secret.yml
+          secretName: mongo-db-secret # dari nama objek Secret yang dibuat

@@ -1,0 +1,17 @@
+# pastikan expose port ke : 8080
+# atur nodePort : 30031 agar dapat digunakan pada karsajobs-ui
+apiVersion: v1
+kind: Service
+metadata:
+  name: karsajobs
+  labels:
+    app: karsajobs
+    tier: backend
+spec:
+  type: NodePort
+  selector:
+    app: karsajobs
+    tier: backend
+  ports:
+  - port: 8080
+    nodePort: 30031 

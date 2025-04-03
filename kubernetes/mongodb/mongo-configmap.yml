@@ -1,0 +1,9 @@
+apiVersion: v1                
+kind: ConfigMap
+metadata:
+  name: mongo-db-config
+data:
+  # pastikan file mongo.conf memiliki property storage dengan key dbPath = /data/db 
+  mongo.conf: |
+    storage:
+      dbPath: /data/db

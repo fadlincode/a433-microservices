@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karsajobs
+  labels:
+    app: karsajobs
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: karsajobs
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: karsajobs
+        tier: backend
+    spec:
+      containers:
+      # Ambil dari GCHR yang sudah dibuild pada branch karsajobs
+      - name: karsajobs
+        image: ghcr.io/fadlincode/karsajobs:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        # ---------------------------------------------
+        # Environtment Value
+        # ---------------------------------------------
+        # APP_PORT dengan nilai “8080”.
+        # MONGO_HOST dengan nilai yang diambil dari MongoDB Service.
+        # MONGO_USER dengan nilai yang diambil dari MongoDB Secret (MONGO_ROOT_USERNAME).
+        # MONGO_PASS dengan nilai yang diambil dari MongoDB Secret (MONGO_ROOT_PASSWORD).
+        env:
+        - name: APP_PORT 
+          value: "8080"
+        - name: MONGO_HOST
+          value: mongo-db
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: mongo-db-secret
+              key: MONGO_ROOT_USERNAME
+        - name: MONGO_PASS
+          valueFrom:
+            secretKeyRef:
+              name: mongo-db-secret
+              key: MONGO_ROOT_PASSWORD
