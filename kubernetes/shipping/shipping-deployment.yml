@@ -24,5 +24,11 @@ spec:
         ports:
         - containerPort: 3001
         env:
+        # Ambil password dari secret rabbitmq 
+        - name: AMQP_PASSWORD  
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq
+              key: rabbitmq-password
         - name: AMQP_URL
-          value: "amqp://guest:guest@rabbitmq-headless:5672/"
+          value: "amqp://user:$(AMQP_PASSWORD)@rabbitmq:5672/"
