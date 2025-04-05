@@ -1,0 +1,11 @@
+GHRC Proyek Ecommerce App: 
+-----------------------------------------------
+
+order-service : ghcr.io/fadlincode/ecommerce-order-service:latest
+shipping-service : ghcr.io/fadlincode/ecommerce-shipping-service:latest
+
+Repo Link :
+-----------------------------------------------
+order-service : https://github.com/fadlincode/a433-microservices/tree/order-service
+shipping-service : https://github.com/fadlincode/a433-microservices/tree/shipping-service
+proyek-ecommerce-app : https://github.com/fadlincode/a433-microservices/tree/proyek-ecommerce-app
