@@ -1,4 +1,4 @@
-GHRC Proyek Ecommerce App: 
+GHCR Proyek Ecommerce App: 
 -----------------------------------------------
 
 order-service : ghcr.io/fadlincode/ecommerce-order-service:latest
