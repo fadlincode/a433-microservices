@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # RabbitMQ Server : version 3.11-management
+  rabbitmq-server:
+    image: rabbitmq:3.11-management
+    container_name: 'rabbitmq-server'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker/rabbitmq/log/:/var/log/rabbitmq/
+    networks:
+      - rabbitmq-network
+    restart: always
+
+  # ----------------------------------------------------
+  # ORDER SERVICE
+  # ----------------------------------------------------
+  # gunakan docker image yang telah di build pada GHCR
+  # lister port : 3000
+  order-service:
+    image: ghcr.io/fadlincode/ecommerce-order-service:latest
+    ports:
+      - 3000:3000
+    depends_on:
+      - rabbitmq-server
+    networks:
+      - rabbitmq-network
+    restart: always
+    environment:
+      AMQP_URL: "amqp://guest:guest@rabbitmq-local:5672/"
+
+  # ----------------------------------------------------
+  # SHIPPING SERVICE
+  # ----------------------------------------------------
+  # gunakan docker image yang telah di build pada GHCR
+  # lister port : 3001
+  shipping-service:
+    image: ghcr.io/fadlincode/commerce-shipping-service:latest
+    ports:
+      - 3001:3001
+    depends_on:
+      - rabbitmq-server
+    networks:
+      - rabbitmq-network
+    restart: always
+    environment:
+      AMQP_URL: "amqp://guest:guest@rabbitmq-local:5672/"
+
+# Docker network
+networks:
+  rabbitmq-network:
+    driver: bridge

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  labels:
+    app: order-service
+    tier: producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+      tier: producer
+  template:
+    metadata:
+      labels:
+        app: order-service
+        tier: producer
+    spec:
+      containers:
+      # Ambil dari GCHR yang sudah dibuild pada branch order-service
+      - name: order-service
+        image: ghcr.io/fadlincode/ecommerce-order-service:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: AMQP_URL
+          value: "amqp://guest:guest@rabbitmq-local:5672/"

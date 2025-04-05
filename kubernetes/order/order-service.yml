@@ -1,0 +1,16 @@
+# ORDER SERVICE : 3000
+# PRODUCER
+# ------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  labels:
+    app: order-service
+    tier: producer
+spec:
+  selector:
+    app: order-service
+    tier: producer
+  ports:
+    port: 3000
