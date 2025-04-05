@@ -1,0 +1,36 @@
+version: 2.1
+
+executors:
+  docker-executor:
+    # Menggunakan Node.js
+    docker:
+      - image: cimg/node:18.16  
+
+jobs:
+  # job untuk proses menginstal hadolint dan menjalankannya terhadap berkas Dockerfile.
+  lint-dockerfile:
+    docker:
+      - image: hadolint/hadolint:latest-alpine
+    steps:
+      - checkout
+      - run:
+          name: Lint Dockerfile
+          command: hadolint Dockerfile
+
+  # job build image ke github container registry
+  build-ecommerce-shipping-service:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          command: ./build_push_shipping_service.sh
+
+workflows:
+  workflow-ecommerce-shipping-service:
+    jobs:
+      - lint-dockerfile
+      - build-ecommerce-shipping-service:
+          requires:
+            - lint-dockerfile
